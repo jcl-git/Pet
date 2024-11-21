@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <form action="">
+        <div class="mb-3">
+            <label class="form-label">搜索猫咪品种：</label>
+            <input type="text" name="searchCat" class="form-control" />
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary" >搜索</button>
+        </div>
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <p>搜索{{searchTerm}}</p>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for cat in cats %}
+        <div v-for="cat in cats" class="col">
+        <div class="card">
+        <img class="card-img-top" src="{{cat.image.url}}" />
+        <div class="card-body">
+        <a href="{% url 'catdetail' cat.id %}">
+        <h5 class="card-title fw-bold">{{cat.title}}</h5>
+        </a>
+        <p class="card-text">{{cat.description|truncatechars:40}}</p>
+        {% if cat.url %}
+        <a href="{{cat.url}}" class="btn btn-primary">猫咪资源</a>
+        {% endif %}
+        </div>
+        </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="d-flex justify-content-center align-items-center">
+    {% include "pagination.html" with page=cats %}
+</div>
+{% endblock content %}
+
+

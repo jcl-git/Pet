@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card mb-3">
+    <div class="row g-0">
+        <div class="col-md-4">
+            <img src="{{cat.image.url}}" class="img-fluid rounded-start" alt="">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title">{{cat.title}}</h5>
+                <p class="card-text">{{cat.description}}</p>
+                <p class="card-text">
+                {% if cat.url %}
+                <a href="{{cat.url}}" class="btn btn-primary">猫咪资源</a>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    <a href="{% url 'createcatreview' cat.id %}" class="btn btn-primary">
+                        发表评论
+                    </a>
+                    {% endif %}
+                </p>
+                <hr/>
+                <h3>评论</h3>
+                <ul class="list-group">
+                    {% for review in reviews %}
+                    <li class="list-group-item pb-3 pt-3">
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            <b>{{ review.user.username }}</b>  {{ review.date }}
+                        </h6>
+<p class="card-text">{{ review.text }}</p>
+                        {% if user.is_authenticated and user == review.user %}
+                            <a class="btn btn-primary me-2" href="{% url 'updatecatreview' review.id %}">修改</a>
+                            <a class="btn btn-danger" href="{% url 'deletecatreview' review.id %}">删除</a>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
